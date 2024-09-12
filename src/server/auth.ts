@@ -20,15 +20,27 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
+      organizations?: string,
+      location?: string,
+      bio?: string,
+      followers?: number,
+      following?: number,
+      repos?: string
       // ...other properties
       // role: UserRole;
     } & DefaultSession["user"];
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User {
+    // ...other properties
+    // role: UserRole;
+    organizations?: string;
+    location?: string;
+    bio?: string;
+    followers?: number;
+    following?: number;
+    repos?: string;
+  }
 }
 
 /**
@@ -43,6 +55,12 @@ export const authOptions: NextAuthOptions = {
       user: {
         ...session.user,
         id: user.id,
+        bio: user.bio,
+        location: user.location,
+        organizations: user.organizations,
+        followers: user.followers,
+        following: user.following,
+        repos: user.repos
       },
     }),
   },
@@ -59,6 +77,11 @@ export const authOptions: NextAuthOptions = {
           email: profile.email,
           image: profile.avatar_url,
           organizations: profile.organizations_url,
+          location: profile.location ?? "No Location",
+          bio: profile.bio ?? "No Bio",
+          followers: profile.followers,
+          following: profile.following,
+          repos: profile.repos_url
         };
       },
     }),
