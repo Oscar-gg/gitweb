@@ -7,7 +7,7 @@ export const UserList = () => {
   return (
     <>
       {users && users.length > 0 ? (
-        users.map((user) => <UserCard id={user.id} />)
+        users.map((user) => <UserCard key={user.id} id={user.id} />)
       ) : (
         <p className="text-lg text-white">
           No users found :(, Be the first to join!
