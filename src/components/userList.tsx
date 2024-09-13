@@ -27,6 +27,10 @@ const UserCard = ({ id, onChangeFunc }: { id: string, onChangeFunc: (urlRepos: s
   const session = useSession();
   const router = useRouter();
 
+  function removeParentheses(str : string) {
+    return str.replace(/\s*\(.*?\)\s*/g, '');
+  }
+
   const mutate = api.user.deleteUserById.useMutation({
     onError: (error) => {
       alert(error.message);
@@ -128,7 +132,7 @@ const UserCard = ({ id, onChangeFunc }: { id: string, onChangeFunc: (urlRepos: s
           <div className="flex flex-col items-center gap-y-4 py-4">
             <p>Bio: {bioCropped}</p>
             <p>Joined our web on {user?.createdAt.toDateString()}</p>
-            <p>Last login on {user?.lastLogin?.toTimeString()}</p>
+            <p>Last login on {removeParentheses(user?.lastLogin?.toTimeString() ?? "")}</p>
           </div>
 
           <div className="flex gap-2 px-2">
