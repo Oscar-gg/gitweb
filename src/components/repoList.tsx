@@ -1,6 +1,6 @@
 import { api } from "~/utils/api";
 
-export const RepoList = (urlRepo: string) => {
+export const RepoList = (urlRepo) => {
   let repo;
   if (urlRepo) {
     repo = api.github.fetchRepos.useQuery({ linkGithub: urlRepo.urlRepo });
