@@ -5,13 +5,11 @@ type repoListProps = {
 };
 
 export const RepoList = ({ user } : repoListProps) => {
-    const id = "hi";
-    const thing = api.github.fetchRepos.useQuery({ text: id });
-    console.log(thing);
+    const { data: repo } = api.github.fetchRepos.useQuery({linkGithub: "https://api.github.com/users/Oscar-gg/repos"});
+    console.log(repo);
 
     return (
         <>
-          <p>here</p>
         </>
       );
 };
