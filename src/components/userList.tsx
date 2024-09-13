@@ -7,7 +7,7 @@ export const UserList = () => {
   return (
     <>
       {users && users.length > 0 ? (
-        users.map((user) => <UserCard key={user.id} id={user.id} />)
+        users.map((user) => <UserCard id={user.id} />)
       ) : (
         <p className="text-lg text-white">
           No users found :(, Be the first to join!
@@ -20,8 +20,43 @@ export const UserList = () => {
 const UserCard = ({ id }: { id: string }) => {
   const { data: user } = api.user.getUserById.useQuery({ id });
 
+  let itemElements = [];
+  let numFollowers = 0;
+  if (user?.followers != null) {
+    numFollowers = user?.followers;
+  }
+  
+  // Capping the number of pfps to return to 7
+  let listOfPfps = null;
+  if (user != null && user.followers_url != null) {
+    const { data: tempListOfPfps } = api.user.getUserPfps.useQuery({ numOfUsers: Math.min(numFollowers, 7), followersUrl: user?.followers_url });
+    listOfPfps = tempListOfPfps;
+  } else {
+    const { data: tempListOfPfps } = api.user.getUserPfps.useQuery({ numOfUsers: Math.min(numFollowers, 7), followersUrl: "" });
+    listOfPfps = tempListOfPfps;
+  }
+  
+  for (let i = 0; i < Math.min(numFollowers, 7); i++) {
+    if (listOfPfps == null) break;
+    itemElements.push(
+      <img  
+        className="-mr-2 h-10 w-10 rounded-full border-2 border-white dark:border-gray-800"
+        src={String(listOfPfps[i])}
+      />
+    );
+  }
+
+  if (numFollowers > 7) {
+    itemElements[6] = 
+    <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-gray-200 bg-white text-sm font-semibold text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+      +{numFollowers - 6}
+    </span>
+  }
+
+
+
   return (
-    <div className="bg-gray-200 pt-12 dark:bg-gray-700">
+    <div className="bg-gray-200 pt-12 dark:bg-gray-700">  
       <div className="mx-auto max-w-sm overflow-hidden rounded-lg bg-white shadow-lg dark:bg-gray-900">
         <div className="border-b px-4 pb-6">
           <div className="my-4 text-center">
@@ -87,39 +122,7 @@ const UserCard = ({ id }: { id: string }) => {
           </div>
           <div className="flex">
             <div className="mr-2 flex justify-end">
-              <img
-                className="-mr-2 h-10 w-10 rounded-full border-2 border-white dark:border-gray-800"
-                src="https://randomuser.me/api/portraits/men/32.jpg"
-                alt=""
-              />
-              <img
-                className="-mr-2 h-10 w-10 rounded-full border-2 border-white dark:border-gray-800"
-                src="https://randomuser.me/api/portraits/women/31.jpg"
-                alt=""
-              />
-              <img
-                className="-mr-2 h-10 w-10 rounded-full border-2 border-white dark:border-gray-800"
-                src="https://randomuser.me/api/portraits/men/33.jpg"
-                alt=""
-              />
-              <img
-                className="-mr-2 h-10 w-10 rounded-full border-2 border-white dark:border-gray-800"
-                src="https://randomuser.me/api/portraits/women/32.jpg"
-                alt=""
-              />
-              <img
-                className="-mr-2 h-10 w-10 rounded-full border-2 border-white dark:border-gray-800"
-                src="https://randomuser.me/api/portraits/men/44.jpg"
-                alt=""
-              />
-              <img
-                className="-mr-2 h-10 w-10 rounded-full border-2 border-white dark:border-gray-800"
-                src="https://randomuser.me/api/portraits/women/42.jpg"
-                alt=""
-              />
-              <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-gray-200 bg-white text-sm font-semibold text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
-                +999
-              </span>
+              {itemElements}
             </div>
           </div>
         </div>

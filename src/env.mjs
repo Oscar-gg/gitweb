@@ -1,4 +1,5 @@
 import { createEnv } from "@t3-oss/env-nextjs";
+import Github from "next-auth/providers/github";
 import { z } from "zod";
 
 export const env = createEnv({
@@ -23,7 +24,7 @@ export const env = createEnv({
     // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
     GITHUB_CLIENT_ID: z.string(),
     GITHUB_CLIENT_SECRET: z.string(),
-
+    GITHUB_API_KEY: z.string(),
   },
 
   /**
@@ -48,6 +49,7 @@ export const env = createEnv({
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
     GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
     GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
+    GITHUB_API_KEY: process.env.GITHUB_API_KEY,
     NEXT_PUBLIC_DEFAULT_PROFILE_IMAGE: process.env.NEXT_PUBLIC_DEFAULT_PROFILE_IMAGE,
   },
   /**
