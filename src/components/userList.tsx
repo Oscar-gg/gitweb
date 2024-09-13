@@ -38,7 +38,7 @@ const UserCard = ({ id }: { id: string }) => {
     },
   });
 
-  const bioCropped = user?.bio?.slice(0, 40) + "...";
+  const bioCropped = (user?.bio?.slice(0, 40) ?? "") + "...";
 
   const itemElements = [];
   let numFollowers = 0;
@@ -60,6 +60,7 @@ const UserCard = ({ id }: { id: string }) => {
     if (listOfPfps == null) break;
     itemElements.push(
       <img  
+        key={i}
         className="-mr-2 h-10 w-10 rounded-full border-2 border-white dark:border-gray-800"
         src={String(listOfPfps[i])}
         alt="Profile picture of one of the followers of a user"
