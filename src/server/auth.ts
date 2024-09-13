@@ -51,6 +51,21 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
+  events: {
+    signIn: async (event) => {
+      // Compute role and update the user just once, when signing in.
+      if (event.user.id) {
+        await prisma.user.update({
+          where: {
+            id: event.user.id,
+          },
+          data: {
+            lastLogin: new Date(),
+          },
+        });
+      }
+    },
+  },
   callbacks: {
     session: ({ session, user }) => ({
       ...session,

@@ -3,6 +3,7 @@ import { env } from "~/env.mjs";
 import {
   createTRPCRouter,
   publicProcedure,
+  protectedProcedure,
 } from "~/server/api/trpc";
 
 interface FollowersResultType {
@@ -67,5 +68,11 @@ export const userRouter = createTRPCRouter({
       console.error("Error fetching pfp info:", error);
       return [""];
     }
+  }
+  ),
+  deleteUserById: protectedProcedure.mutation(async ({ ctx }) => {
+    return await ctx.prisma.user.delete({
+      where: { id: ctx.session.user.id },
+    });
   }),
 });

@@ -1,24 +1,44 @@
 import { api } from "~/utils/api";
 import { env } from "~/env.mjs";
+import PulseLoader from "react-spinners/PulseLoader";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
 
 export const UserList = () => {
-  const { data: users } = api.user.getUserIds.useQuery();
+  const { data: users, isLoading } = api.user.getUserIds.useQuery();
 
   return (
     <>
-      {users && users.length > 0 ? (
-        users.map((user) => <UserCard key={user.id} id={user.id} />)
-      ) : (
-        <p className="text-lg text-white">
-          No users found :(, Be the first to join!
-        </p>
+      {isLoading && (
+        <div>
+          <PulseLoader color="white" />
+          <p className="text-white">Loading...</p>
+        </div>
       )}
+      {users &&
+        users.length > 0 &&
+        users.map((user) => <UserCard key={user.id} id={user.id} />)}
     </>
   );
 };
 
 const UserCard = ({ id }: { id: string }) => {
   const { data: user } = api.user.getUserById.useQuery({ id });
+  const session = useSession();
+  const router = useRouter();
+
+  const mutate = api.user.deleteUserById.useMutation({
+    onError: (error) => {
+      alert(error.message);
+    },
+    onSuccess: () => {
+      alert("You have deleted your profile.");
+      router.refresh();
+    },
+  });
+
+  const bioCropped = user?.bio?.slice(0, 40) + "...";
 
   const itemElements = [];
   let numFollowers = 0;
@@ -57,7 +77,19 @@ const UserCard = ({ id }: { id: string }) => {
 
 
   return (
-    <div className="bg-gray-200 pt-12">
+    <div className="flex flex-col bg-gray-300">
+      {session.data?.user.id === user?.id && (
+        <button
+          className="m-2 rounded-lg bg-red-600 p-2 text-white font-bold"
+          onClick={() => {
+            if (confirm("Are you sure you want to delete your profile?")) {
+              mutate.mutate();
+            }
+          }}
+        >
+          Delete Profile
+        </button>
+      )}
       <div className="mx-auto max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ">
         <div className="border-b px-4 pb-6">
           <div className="my-4 text-center">
@@ -65,7 +97,6 @@ const UserCard = ({ id }: { id: string }) => {
               className="mx-auto my-4 h-32 w-32 rounded-full border-4 border-white"
               src={user?.image ?? env.NEXT_PUBLIC_DEFAULT_PROFILE_IMAGE}
               alt="Profile picture"
-              
             />
             <div className="py-2">
               <h3 className="mb-1 text-2xl font-bold text-gray-800 ">
@@ -89,8 +120,10 @@ const UserCard = ({ id }: { id: string }) => {
               </div>
             </div>
           </div>
-          <div className="flex items-center py-4">
+          <div className="flex flex-col items-center gap-y-4 py-4">
+            <p>Bio: {bioCropped}</p>
             <p>Joined our web on {user?.createdAt.toDateString()}</p>
+            <p>Last login on {user?.lastLogin?.toTimeString()}</p>
           </div>
 
           <div className="flex gap-2 px-2">
