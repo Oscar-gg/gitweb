@@ -62,6 +62,7 @@ model User {
     bio           String?
     location      String?
     createdAt     DateTime  @default(now())
+    lastLogin     DateTime?  @updatedAt
     accounts      Account[]
     sessions      Session[]
 }
