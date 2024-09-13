@@ -17,7 +17,7 @@ export const Diagram = ({ url, width, height} : DiagramProps) => {
       height: 'auto',  // Optional: Set a maximum height for the scroll area
       width: styleWidth,   // Optional: Set a maximum width for the scroll area
       backgroundColor: "#f2f2f2",
-      padding: '50px 10px 0px 10px',
+      padding: '30px 10px 0px 10px',
       borderRadius: '7px'
     }}>
       <div style={{
