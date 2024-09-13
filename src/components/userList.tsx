@@ -7,7 +7,7 @@ export const UserList = () => {
   return (
     <>
       {users && users.length > 0 ? (
-        users.map((user) => <UserCard id={user.id} />)
+        users.map((user) => <UserCard key={user.id} id={user.id} />)
       ) : (
         <p className="text-lg text-white">
           No users found :(, Be the first to join!
@@ -20,7 +20,7 @@ export const UserList = () => {
 const UserCard = ({ id }: { id: string }) => {
   const { data: user } = api.user.getUserById.useQuery({ id });
 
-  let itemElements = [];
+  const itemElements = [];
   let numFollowers = 0;
   if (user?.followers != null) {
     numFollowers = user?.followers;
@@ -42,6 +42,7 @@ const UserCard = ({ id }: { id: string }) => {
       <img  
         className="-mr-2 h-10 w-10 rounded-full border-2 border-white dark:border-gray-800"
         src={String(listOfPfps[i])}
+        alt="Profile picture of one of the followers of a user"
       />
     );
   }
