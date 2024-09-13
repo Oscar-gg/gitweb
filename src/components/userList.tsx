@@ -4,7 +4,6 @@ import PulseLoader from "react-spinners/PulseLoader";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-
 export const UserList = () => {
   const { data: users, isLoading } = api.user.getUserIds.useQuery();
 
@@ -45,21 +44,27 @@ const UserCard = ({ id }: { id: string }) => {
   if (user?.followers != null) {
     numFollowers = user?.followers;
   }
-  
+
   // Capping the number of pfps to return to 7
   let listOfPfps = null;
   if (user != null && user.followers_url != null) {
-    const { data: tempListOfPfps } = api.user.getUserPfps.useQuery({ numOfUsers: Math.min(numFollowers, 7), followersUrl: user?.followers_url });
+    const { data: tempListOfPfps } = api.user.getUserPfps.useQuery({
+      numOfUsers: Math.min(numFollowers, 7),
+      followersUrl: user?.followers_url,
+    });
     listOfPfps = tempListOfPfps;
   } else {
-    const { data: tempListOfPfps } = api.user.getUserPfps.useQuery({ numOfUsers: Math.min(numFollowers, 7), followersUrl: "" });
+    const { data: tempListOfPfps } = api.user.getUserPfps.useQuery({
+      numOfUsers: Math.min(numFollowers, 7),
+      followersUrl: "",
+    });
     listOfPfps = tempListOfPfps;
   }
-  
+
   for (let i = 0; i < Math.min(numFollowers, 7); i++) {
     if (listOfPfps == null) break;
     itemElements.push(
-      <img  
+      <img
         key={i}
         className="-mr-2 h-10 w-10 rounded-full border-2 border-white dark:border-gray-800"
         src={String(listOfPfps[i])}
@@ -69,19 +74,18 @@ const UserCard = ({ id }: { id: string }) => {
   }
 
   if (numFollowers > 7) {
-    itemElements[6] = 
-    <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-gray-200 bg-white text-sm font-semibold text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
-      +{numFollowers - 6}
-    </span>
+    itemElements[6] = (
+      <span className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-gray-200 bg-white text-sm font-semibold text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+        +{numFollowers - 6}
+      </span>
+    );
   }
-
-
 
   return (
     <div className="flex flex-col bg-gray-300">
       {session.data?.user.id === user?.id && (
         <button
-          className="m-2 rounded-lg bg-red-600 p-2 text-white font-bold"
+          className="m-2 rounded-lg bg-red-600 p-2 font-bold text-white"
           onClick={() => {
             if (confirm("Are you sure you want to delete your profile?")) {
               mutate.mutate();
@@ -128,7 +132,12 @@ const UserCard = ({ id }: { id: string }) => {
           </div>
 
           <div className="flex gap-2 px-2">
-            <button className="flex-1 rounded-full bg-blue-600 px-4 py-2 font-bold text-white antialiased hover:bg-blue-800">
+            <button
+              className="flex-1 rounded-full bg-blue-600 px-4 py-2 font-bold text-white antialiased hover:bg-blue-800"
+              onClick={() => {
+                console.log(user?.repos);
+              }}
+            >
               View Repositories
             </button>
           </div>
@@ -149,16 +158,12 @@ const UserCard = ({ id }: { id: string }) => {
               />
             </svg>
             <span>
-              <strong className="text-black ">
-                {user?.followers}
-              </strong>{" "}
+              <strong className="text-black ">{user?.followers}</strong>{" "}
               Followers
             </span>
           </div>
           <div className="flex">
-            <div className="mr-2 flex justify-end">
-              {itemElements}
-            </div>
+            <div className="mr-2 flex justify-end">{itemElements}</div>
           </div>
         </div>
       </div>

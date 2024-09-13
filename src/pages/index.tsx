@@ -2,6 +2,7 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 
 import { UserList } from "~/components/userList";
+import { RepoList } from "~/components/repoList";
 
 export default function Home() {
   return (
@@ -28,6 +29,7 @@ export default function Home() {
           </div>
           <div className="flex flex-row items-center gap-2 flex-wrap justify-center">
             <UserList />
+            <RepoList user="example" />
           </div>
         </div>
       </main>
