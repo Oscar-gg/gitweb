@@ -7,7 +7,7 @@ type DiagramProps = {
 };
 
 export const Diagram = ({ diagramText, width, height} : DiagramProps) => {
-  const { data: svgContent } = api.diagram.fetchSvgPost.useQuery({text: diagramText});
+  const { data: svgContent, isLoading } = api.diagram.fetchSvgPost.useQuery({text: diagramText});
   
   let styleText = ''
   if (width && height) {
@@ -25,7 +25,7 @@ export const Diagram = ({ diagramText, width, height} : DiagramProps) => {
         <div dangerouslySetInnerHTML={{ __html: svgContent.replace('<svg', `<svg ${styleText}`),
         }} />
       ) : (
-        <p>Error fetching SVG content.</p>
+        <p>{isLoading ? ("Loading...") : ("Error fetching SVG content.")}</p>
       )}
     </div>
   );

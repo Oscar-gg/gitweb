@@ -25,6 +25,7 @@ declare module "next-auth" {
       bio?: string,
       followers?: number,
       following?: number,
+      followers_url?: string,
       repos?: string
       // ...other properties
       // role: UserRole;
@@ -40,6 +41,7 @@ declare module "next-auth" {
     followers?: number;
     following?: number;
     repos?: string;
+    followers_url: string;
   }
 }
 
@@ -60,7 +62,8 @@ export const authOptions: NextAuthOptions = {
         organizations: user.organizations,
         followers: user.followers,
         following: user.following,
-        repos: user.repos
+        repos: user.repos,
+        followers_url: user.followers_url
       },
     }),
   },
@@ -81,7 +84,8 @@ export const authOptions: NextAuthOptions = {
           bio: profile.bio ?? "No Bio",
           followers: profile.followers,
           following: profile.following,
-          repos: profile.repos_url
+          repos: profile.repos_url,
+          followers_url: profile.followers_url
         };
       },
     }),

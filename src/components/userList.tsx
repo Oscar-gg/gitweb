@@ -28,7 +28,8 @@ const UserCard = ({ id }: { id: string }) => {
             <img
               className="mx-auto my-4 h-32 w-32 rounded-full border-4 border-white dark:border-gray-800"
               src={user?.image ?? env.NEXT_PUBLIC_DEFAULT_PROFILE_IMAGE}
-              alt="Profile picture"
+              alt="{Profile picture}"
+              
             />
             <div className="py-2">
               <h3 className="mb-1 text-2xl font-bold text-gray-800 dark:text-white">
