@@ -1,11 +1,10 @@
 import { api } from "~/utils/api";
+import { useSearchParams } from "next/navigation";
 
-type repoListProps = {
-  user: string;
-};
-
-export const RepoList = ({ user } : repoListProps) => {
-    const { data: repo } = api.github.fetchRepos.useQuery({linkGithub: "https://api.github.com/users/Oscar-gg/repos"});
+export const RepoList = () => {
+    const searchParams = useSearchParams();
+    const user = searchParams.get("name");
+    const { data: repo } = api.github.fetchRepos.useQuery({linkGithub: user});
     console.log(repo);
 
     return (

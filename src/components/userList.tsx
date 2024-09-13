@@ -3,6 +3,7 @@ import { env } from "~/env.mjs";
 import PulseLoader from "react-spinners/PulseLoader";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { addCookie } from "~/server/cookies";
 
 export const UserList = () => {
   const { data: users, isLoading } = api.user.getUserIds.useQuery();
@@ -135,7 +136,8 @@ const UserCard = ({ id }: { id: string }) => {
             <button
               className="flex-1 rounded-full bg-blue-600 px-4 py-2 font-bold text-white antialiased hover:bg-blue-800"
               onClick={() => {
-                console.log(user?.repos);
+                addCookie({nameCookie: "linkRepo", value: user?.repos});
+                router.push('/repoList');
               }}
             >
               View Repositories
