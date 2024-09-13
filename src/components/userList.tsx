@@ -57,23 +57,23 @@ const UserCard = ({ id }: { id: string }) => {
 
 
   return (
-    <div className="bg-gray-200 pt-12 dark:bg-gray-700">  
-      <div className="mx-auto max-w-sm overflow-hidden rounded-lg bg-white shadow-lg dark:bg-gray-900">
+    <div className="bg-gray-200 pt-12">
+      <div className="mx-auto max-w-sm overflow-hidden rounded-lg bg-white shadow-lg ">
         <div className="border-b px-4 pb-6">
           <div className="my-4 text-center">
             <img
-              className="mx-auto my-4 h-32 w-32 rounded-full border-4 border-white dark:border-gray-800"
+              className="mx-auto my-4 h-32 w-32 rounded-full border-4 border-white"
               src={user?.image ?? env.NEXT_PUBLIC_DEFAULT_PROFILE_IMAGE}
-              alt="{Profile picture}"
+              alt="Profile picture"
               
             />
             <div className="py-2">
-              <h3 className="mb-1 text-2xl font-bold text-gray-800 dark:text-white">
+              <h3 className="mb-1 text-2xl font-bold text-gray-800 ">
                 {user?.name}
               </h3>
-              <div className="inline-flex items-center text-gray-700 dark:text-gray-300">
+              <div className="inline-flex items-center text-gray-700 ">
                 <svg
-                  className="mr-1 h-5 w-5 text-gray-400 dark:text-gray-600"
+                  className="mr-1 h-5 w-5 text-gray-400 "
                   fill="currentColor"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -94,15 +94,15 @@ const UserCard = ({ id }: { id: string }) => {
           </div>
 
           <div className="flex gap-2 px-2">
-            <button className="flex-1 rounded-full bg-blue-600 px-4 py-2 font-bold text-white antialiased hover:bg-blue-800 dark:bg-blue-800 dark:text-white dark:hover:bg-blue-900">
+            <button className="flex-1 rounded-full bg-blue-600 px-4 py-2 font-bold text-white antialiased hover:bg-blue-800">
               View Repositories
             </button>
           </div>
         </div>
         <div className="px-4 py-4">
-          <div className="mb-4 flex items-center gap-2 text-gray-800 dark:text-gray-300">
+          <div className="mb-4 flex items-center gap-2 text-gray-800 ">
             <svg
-              className="h-6 w-6 text-gray-600 dark:text-gray-400"
+              className="h-6 w-6 text-gray-600 "
               fill="currentColor"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -115,7 +115,7 @@ const UserCard = ({ id }: { id: string }) => {
               />
             </svg>
             <span>
-              <strong className="text-black dark:text-white">
+              <strong className="text-black ">
                 {user?.followers}
               </strong>{" "}
               Followers
