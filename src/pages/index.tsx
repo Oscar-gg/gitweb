@@ -4,8 +4,6 @@ import Head from "next/head";
 import { UserList } from "~/components/userList";
 
 export default function Home() {
-  // const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
   return (
     <>
       <Head>
