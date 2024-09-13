@@ -1,22 +1,26 @@
 import { api } from "~/utils/api";
 
-export const RepoList = (urlRepo: string) => {
-  let repo;
-  if (urlRepo) {
-    repo = api.github.fetchRepos.useQuery({ linkGithub: urlRepo.urlRepo });
-  }
-  console.log(repo.data);
 
-  if (repo.data) {
-    repo.data.forEach((element) => {
+type RepoProps = {
+  urlRepo: string;
+};
+
+export const RepoList = ({urlRepo} : RepoProps) => {
+  let repo = null;
+  if (urlRepo) {
+    repo = api.github.fetchRepos.useQuery({ linkGithub: urlRepo }).data;
+  }
+
+  if (repo) {
+    repo.forEach((element) => {
       console.log(element);
     });
   }
 
   return (
     <>
-      {repo.data &&
-        repo.data.map((info) => (
+      {repo &&
+        repo.map((info) => (
             <div
             style={{
               width: "80%",

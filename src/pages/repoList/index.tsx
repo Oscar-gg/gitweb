@@ -15,7 +15,7 @@ export default function Home() {
             Gitweb <span className="text-[hsl(280,100%,70%)]">Zeta</span>
           </h1>
         </div>
-        <RepoList />
+        <RepoList urlRepo={""} />
       </main>
     </>
   );

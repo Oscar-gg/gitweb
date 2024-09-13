@@ -4,7 +4,6 @@ import { useState } from "react";
 
 import { UserList } from "~/components/userList";
 import { RepoList } from "~/components/repoList";
-import { url } from "inspector";
 
 export default function Home() {
   const [repoSelected, changeRepoSelected] = useState('');

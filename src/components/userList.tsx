@@ -4,7 +4,7 @@ import PulseLoader from "react-spinners/PulseLoader";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-export const UserList = ({onChange}) => {
+export const UserList = ({ onChange }: { onChange: (urlRepos: string) => void }) => {
   const { data: users, isLoading } = api.user.getUserIds.useQuery();
 
   return (
@@ -136,7 +136,7 @@ const UserCard = ({ id, onChangeFunc }: { id: string, onChangeFunc: (urlRepos: s
               className="flex-1 rounded-full bg-blue-600 px-4 py-2 font-bold text-white antialiased hover:bg-blue-800"
               onClick={() => {
                 console.log(onChangeFunc);
-                onChangeFunc(user?.repos);
+                onChangeFunc(user?.repos ?? '');
               }}
             >
               View Repositories

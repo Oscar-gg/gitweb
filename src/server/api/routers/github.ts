@@ -24,7 +24,7 @@ export const githubRouter = createTRPCRouter({
         if (!response.ok) {
           throw new Error(`Response status: ${response.status}`);
         }
-        const responseJson = (await response.json()) as GithubReposType;
+        const responseJson = (await response.json()) as GithubReposType[];
         const gitRepos: GithubReposType[] = [];
         responseJson.map((result: GithubReposType) => {
           gitRepos.push({id: result.id, name: result.name, commits_url: result.commits_url});
@@ -32,7 +32,7 @@ export const githubRouter = createTRPCRouter({
         return gitRepos;
       } catch (error) {
         console.error("Error fetching github data:", error);
-        return "";
+        return [];
       }
     }),
 });
