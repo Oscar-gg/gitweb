@@ -7,7 +7,6 @@ import {
 } from "~/server/api/trpc";
 
 interface FollowersResultType {
-  login: string,
   id: number,
   node_id: string,
   avatar_url: string,

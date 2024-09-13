@@ -27,7 +27,6 @@ declare module "next-auth" {
       following?: number,
       followers_url?: string,
       repos?: string
-      login?: string;
       // ...other properties
       // role: UserRole;
     } & DefaultSession["user"];
@@ -43,7 +42,6 @@ declare module "next-auth" {
     following?: number;
     repos?: string;
     followers_url: string;
-    login?: string;
   }
 }
 
@@ -81,7 +79,6 @@ export const authOptions: NextAuthOptions = {
         following: user.following,
         repos: user.repos,
         followers_url: user.followers_url,
-        login: user.login,
       },
     }),
   },
@@ -104,7 +101,6 @@ export const authOptions: NextAuthOptions = {
           following: profile.following,
           repos: profile.repos_url,
           followers_url: profile.followers_url,
-          login: profile.login
         };
       },
     }),
