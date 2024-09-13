@@ -22,6 +22,17 @@ export const RepoList = ({ urlRepo }: RepoProps) => {
     console.log("Clicked on repo:", repoName);
   }
 
+  function getGithubHandle(url : string) : string {
+    // Split the URL by '/' and return the part that corresponds to the handle
+    const parts = url.split('/');
+    return parts[parts.length - 2] ?? "";
+  }
+
+  const githubHandle = getGithubHandle(urlRepo);
+  
+  console.log(githubHandle); // Outputs: Oscar-gg
+  
+
   let repo = null;
   if (urlRepo) {
     repo = api.github.fetchRepos.useQuery({ linkGithub: urlRepo }).data;
@@ -34,6 +45,13 @@ export const RepoList = ({ urlRepo }: RepoProps) => {
     });
     if (repo.length > 5) {
       for (let i = 0; i < 5; i++) {
+        const currentRepo = repo[i]; // Check each repo element
+        if (currentRepo) { // Ensure the element is defined
+          repoCapped.push(currentRepo);
+        }
+      }
+    } else {
+      for (let i = 0; i < repo.length; i++) {
         const currentRepo = repo[i]; // Check each repo element
         if (currentRepo) { // Ensure the element is defined
           repoCapped.push(currentRepo);
@@ -69,7 +87,7 @@ export const RepoList = ({ urlRepo }: RepoProps) => {
             </button>
           </div>
         ))}
-      {repoClicked && <DiagramPage url={'https://api.github.com/repos/Oscar-gg/' + repoClicked + '/commits'}  repoName={repoClicked} ></DiagramPage>} {/* Display the clicked repo */}
+      {repoClicked && <DiagramPage url={'https://api.github.com/repos/' + githubHandle + '/' + repoClicked + '/commits'}  repoName={repoClicked} ></DiagramPage>} {/* Display the clicked repo */}
     </>
   );
 };
