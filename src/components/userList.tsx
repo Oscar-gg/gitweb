@@ -3,9 +3,8 @@ import { env } from "~/env.mjs";
 import PulseLoader from "react-spinners/PulseLoader";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { addCookie } from "~/server/cookies";
 
-export const UserList = () => {
+export const UserList = ({onChange}) => {
   const { data: users, isLoading } = api.user.getUserIds.useQuery();
 
   return (
@@ -18,12 +17,12 @@ export const UserList = () => {
       )}
       {users &&
         users.length > 0 &&
-        users.map((user) => <UserCard key={user.id} id={user.id} />)}
+        users.map((user) => <UserCard key={user.id} id={user.id} onChangeFunc={onChange} />)}
     </>
   );
 };
 
-const UserCard = ({ id }: { id: string }) => {
+const UserCard = ({ id, onChangeFunc }: { id: string, onChangeFunc: (urlRepos: string) => void }) => {
   const { data: user } = api.user.getUserById.useQuery({ id });
   const session = useSession();
   const router = useRouter();
@@ -136,8 +135,8 @@ const UserCard = ({ id }: { id: string }) => {
             <button
               className="flex-1 rounded-full bg-blue-600 px-4 py-2 font-bold text-white antialiased hover:bg-blue-800"
               onClick={() => {
-                addCookie({nameCookie: "linkRepo", value: user?.repos});
-                router.push('/repoList');
+                console.log(onChangeFunc);
+                onChangeFunc(user?.repos);
               }}
             >
               View Repositories

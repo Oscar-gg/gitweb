@@ -1,10 +1,19 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
+import { useState } from "react";
 
 import { UserList } from "~/components/userList";
 import { RepoList } from "~/components/repoList";
+import { url } from "inspector";
 
 export default function Home() {
+  const [repoSelected, changeRepoSelected] = useState('');
+
+  function changes (inp: string){
+    console.log(inp);
+    changeRepoSelected(inp);
+  }
+
   return (
     <>
       <Head>
@@ -28,8 +37,11 @@ export default function Home() {
             <AuthShowcase />
           </div>
           <div className="flex flex-row items-center gap-2 flex-wrap justify-center">
-            <UserList />
+            <UserList onChange={changes}/>
           </div>
+          {repoSelected != '' && (
+              <RepoList urlRepo = {repoSelected}/>
+            )}
         </div>
       </main>
     </>

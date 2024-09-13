@@ -14,6 +14,7 @@ export const githubRouter = createTRPCRouter({
     .query(async ({ input }) => {
       try {
         const token = env.GITHUB_API_KEY;
+        console.log(input);
         const response = await fetch(input.linkGithub, {
           headers: {
             Authorization: `token ${token}`,
