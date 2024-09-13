@@ -153,8 +153,8 @@ export const diagramRouter = createTRPCRouter({
             console.error("Failed to fetch parent commit name:", error);
           }
           
-          commitName = commitName.slice(0, 20).replace(/[^a-zA-Z0-9 ]/g, '');
-          parentCommitName = parentCommitName.slice(0, 20).replace(/[^a-zA-Z0-9 ]/g, '');
+          commitName = commitName.slice(0, 50).replace(/:/g, ' ').replace(/[^a-zA-Z0-9 ]/g, ' ');
+          parentCommitName = parentCommitName.slice(0, 50).replace(/:/g, ' ').replace(/[^a-zA-Z0-9 ]/g, ' ');
           // Create the instruction
           const formattedCommitName = commitName.replace(/ /g, '_');
           const formattedParentCommitName = parentCommitName.replace(/ /g, '_');
