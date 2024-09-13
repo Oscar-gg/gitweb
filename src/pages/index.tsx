@@ -5,8 +5,6 @@ import { UserList } from "~/components/userList";
 import { RepoList } from "~/components/repoList";
 
 export default function Home() {
-  // const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
   return (
     <>
       <Head>

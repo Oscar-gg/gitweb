@@ -1,32 +1,39 @@
 import { api } from "~/utils/api";
 
 type DiagramProps = {
-  diagramText: string;
+  url: string;
   width?: number;
   height?: number;
 };
 
-export const Diagram = ({ diagramText, width, height} : DiagramProps) => {
-  const { data: svgContent, isLoading } = api.diagram.fetchSvgPost.useQuery({text: diagramText});
+export const Diagram = ({ url, width, height} : DiagramProps) => {
+  const { data: instructionString } = api.diagram.getCommitTreeInfo.useQuery({url: url});
+  const { data: svgContent, isLoading } = api.diagram.fetchSvgPost.useQuery({text: instructionString??''});
   
-  let styleText = ''
-  if (width && height) {
-    styleText = `style="width: ${width}px; height: ${height}px;"`
-  } else if (width) {
-    styleText = `style="width: ${width}px;"`
-  } else if (height) {
-    styleText = `style="height: ${height}px;"`
-  }
-
+  const styleWidth = width? width.toString() + 'px': "auto";
+  console.log(styleWidth);
   return (
-    <div>
-      {/* Display fetched SVG content if available */}
-      {svgContent ? (
-        <div dangerouslySetInnerHTML={{ __html: svgContent.replace('<svg', `<svg ${styleText}`),
-        }} />
-      ) : (
-        <p>{isLoading ? ("Loading...") : ("Error fetching SVG content.")}</p>
-      )}
+    <div style={{
+      height: 'auto',  // Optional: Set a maximum height for the scroll area
+      width: styleWidth,   // Optional: Set a maximum width for the scroll area
+      backgroundColor: "#f2f2f2",
+      padding: '50px 10px 0px 10px',
+      borderRadius: '7px'
+    }}>
+      <div style={{
+        overflow: 'auto',  // Enables both horizontal and vertical scrolling
+        maxHeight: '100vh',  // Optional: Set a maximum height for the scroll area
+        maxWidth: '100vw',   // Optional: Set a maximum width for the scroll area
+      }}
+      >
+        {/* Display fetched SVG content if available */}
+        {svgContent ? (
+          <div dangerouslySetInnerHTML={{ __html: svgContent,
+          }} />
+        ) : (
+          <p>{isLoading ? ("Loading...") : ("Error fetching SVG content.")}</p>
+        )}
+      </div>
     </div>
   );
 };
