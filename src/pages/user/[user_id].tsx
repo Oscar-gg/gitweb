@@ -1,10 +1,23 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 
-import { UserList } from "~/components/userList";
-import { RepoList } from "~/components/repoList";
+import { useRouter } from "next/router";
+import { api } from "~/utils/api";
 
 export default function Home() {
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  const { user_id } = router.query;
+  const userId = user_id as string;
+
+  const { data: userData } = api.user.getUserById.useQuery({ id: userId });
+  const { data: repoList } = api.github.fetchRepos.useQuery(
+    { linkGithub: userData?.repos ?? "" },
+    { enabled: !!userData?.repos }
+  );
+  console.log(repoList);
+
   return (
     <>
       <Head>
@@ -25,31 +38,9 @@ export default function Home() {
                 to add into our web.
               </div>
             </div>
-            <AuthShowcase />
-          </div>
-          <div className="flex flex-row items-center gap-2 flex-wrap justify-center">
-            <UserList />
-            <RepoList user="oscar-gg" />
           </div>
         </div>
       </main>
     </>
-  );
-}
-
-function AuthShowcase() {
-  const { data: sessionData } = useSession();
-  return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      <p className="text-center text-2xl text-white">
-        {sessionData && <span>Logged in as {sessionData.user?.name}!</span>}
-      </p>
-      <button
-        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-        onClick={sessionData ? () => void signOut() : () => void signIn()}
-      >
-        {sessionData ? "Sign out" : "Sign in"}
-      </button>
-    </div>
   );
 }

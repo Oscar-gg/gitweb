@@ -25,9 +25,13 @@ export const githubRouter = createTRPCRouter({
         }
         const responseJson = (await response.json()) as GithubReposType;
         const listPfp: GithubReposType[] = [];
-        responseJson.map((result: GithubReposType) => {
-          listPfp.push({id: result.id, name: result.name, commits_url: result.commits_url});
-        });
+        if (Array.isArray(responseJson)) {
+          responseJson.map((result: GithubReposType) => {
+            listPfp.push({ id: result.id, name: result.name, commits_url: result.commits_url });
+          });
+        } else {
+          console.error("responseJson is not an array");
+        }
         return listPfp;
       } catch (error) {
         console.error("Error fetching github data:", error);

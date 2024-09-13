@@ -3,10 +3,11 @@ import { env } from "~/env.mjs";
 import PulseLoader from "react-spinners/PulseLoader";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export const UserList = () => {
   const { data: users, isLoading } = api.user.getUserIds.useQuery();
-
+  const router = useRouter();
   return (
     <>
       {isLoading && (
@@ -17,15 +18,14 @@ export const UserList = () => {
       )}
       {users &&
         users.length > 0 &&
-        users.map((user) => <UserCard key={user.id} id={user.id} />)}
+        users.map((user) => <UserCard key={user.id} id={user.id} router={router}/>)}
     </>
   );
 };
 
-const UserCard = ({ id }: { id: string }) => {
+const UserCard = ({ id, router }: { id: string, router:  AppRouterInstance}) => {
   const { data: user } = api.user.getUserById.useQuery({ id });
   const session = useSession();
-  const router = useRouter();
 
   const mutate = api.user.deleteUserById.useMutation({
     onError: (error) => {
@@ -135,7 +135,8 @@ const UserCard = ({ id }: { id: string }) => {
             <button
               className="flex-1 rounded-full bg-blue-600 px-4 py-2 font-bold text-white antialiased hover:bg-blue-800"
               onClick={() => {
-                console.log(user?.repos);
+                console.log("USER ID: ", user?.id);
+                router.push(`/user/${user?.id ?? ""}`);
               }}
             >
               View Repositories
